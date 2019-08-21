@@ -1,0 +1,18 @@
+class room
+
+string name (hallway or actual room or house itself)
+int walls
+int doors
+int windows
+double sqrft
+Vec2d dimensions
+
+method addwall
+method removewall
+adddoor
+removedoor
+add/remove window
+resize
+createHouse (takes dimensions and makes a house(initial room) of that size) - how many walls (at least 4) 
+drawing methods for doors, windows
+createRoom (inside whatever was created by createhouse)
