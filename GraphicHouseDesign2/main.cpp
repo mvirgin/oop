@@ -87,7 +87,7 @@ bool Wall::doesLineIntersect(Vec2d p, bool isLineVertical) const{ //checks if th
             return false;
         }
 
-        return p.x > min(P1.x,P2.x) && p.x < max(P1.x, P2.x);//CHECK CODE SENT BY EMAIL
+        return p.x > min(P1.x,P2.x) && p.x < max(P1.x, P2.x);
     }
     else{
         if (!isVertical){
@@ -123,7 +123,7 @@ public:
     bool containsPoint(Vec2d pos);
     void SetSelected(Vec2d pos);
     bool containsWall(Wall* w);
-    void replaceWall (Wall* oldWall, Wall * newWall1, Wall* newWall2/*vector <Wall*> newWalls*/);
+    void replaceWall (Wall* oldWall, Wall * newWall1, Wall* newWall2);
 
     friend class House;
 };
@@ -137,7 +137,7 @@ bool Room::containsWall(Wall *w){
     return find (walls.begin(),walls.end(),w) != walls.end();
 }
 
-void Room::replaceWall(Wall *oldWall,  Wall * newWall1, Wall* newWall2  /*vector<Wall *> newWalls*/){
+void Room::replaceWall(Wall *oldWall,  Wall * newWall1, Wall* newWall2){
 
     auto pos = find (walls.begin(),walls.end(), oldWall);
 
@@ -148,7 +148,6 @@ void Room::replaceWall(Wall *oldWall,  Wall * newWall1, Wall* newWall2  /*vector
     else{
         prevWall = *(pos-1);
     }
-    // auto prev = pos-1; //careful if replacing the first wall
 
     if (!wallsTouch(*newWall1,*prevWall)){
         swap(newWall1,newWall2); // ensure we are in clockwise order
@@ -157,26 +156,31 @@ void Room::replaceWall(Wall *oldWall,  Wall * newWall1, Wall* newWall2  /*vector
     auto insertPos = walls.erase(pos);
     insertPos = walls.insert(insertPos,newWall2);
     walls.insert(insertPos,newWall1);
-    //  walls.erase(find (walls.begin(),walls.end(), oldWall)); //just change it to use walls everywhere instead of walls
 }
 
 void Room::Rdraw(Graphics &g, Color c){
+    Vec2d middle{0,0};
     for (int i =0; i <walls.size(); i++){
+        middle=middle+walls[i]->P1;
         if (selected==true){
             walls[i]->wallDraw(g, c);
 
-            auto s = std::to_string(i);; //woooo
+            auto s = std::to_string(i);;
             Vec2d point2 = walls[i]->FindP2();
             Vec2d point1 = walls[i]->P1;
             double mdpt1 = ((point1.x+point2.x)/2);
             double mdpt2 = ((point1.y+point2.y)/2);
             Vec2d mdpt{mdpt1,mdpt2};
-            g.text(mdpt.x,mdpt.y,20,s);  //THE WALL ON THE RIGHT IS COUNTERCLOCKWISE!!!!!!!!!!!!!!!!!!1
+            g.text(mdpt.x,mdpt.y,20,s);
+
+
         }
         else{
             walls[i]->wallDraw(g, WHITE);
         }
     }
+    middle=middle*(1.0/walls.size());
+    g.text(middle,20,name);
 }
 
 bool Room::containsPoint(Vec2d pos){
@@ -214,11 +218,11 @@ public:
 
     void draw (Graphics& g);
     void setRoomsSelected(Vec2d pos);
-    Room *findRoom(Vec2d pos);  //actually add this
+    Room *findRoom(Vec2d pos);
     void vSplitRoom(Vec2d pos);
     void hSplitRoom(Vec2d pos);
     Wall* wallFactory(Vec2d start, Vec2d end);
-    Room* roomFactory(string name, vector<Wall*> walls); //CHECK EMAILLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLllll
+    Room* roomFactory(string name, vector<Wall*> walls);
     vector <Wall*> splitWall(Wall* wall, Vec2d pos);
 };
 
@@ -258,17 +262,17 @@ Room* House::roomFactory(string name, vector<Wall*> walls){
 }
 
 void House::draw(Graphics &g){
-    //    for (int i =0; i <walls.size(); i++){ // do I even need this anymore?
-    //        //        walls[i]->wallDraw(g);
-    //    }
+        for (int i =0; i <walls.size(); i++){
+                    walls[i]->wallDraw(g);
+        }
 
     for (Room&r:rooms){
         if (r.selected){
             r.Rdraw(g,GREEN);
         }
-        else{
-            r.Rdraw(g,WHITE); // if i make the house invisible when its not selected, all the rooms show up perfectly, so i think the 4th wall showing up white is just this drawing over a green wall with a white wall when walls are shared
-        }
+//        else{
+//            r.Rdraw(g,WHITE); // if i make the house invisible when its not selected, all the rooms show up perfectly, so i think the 4th wall showing up white is just this drawing over a green wall with a white wall when walls are shared
+//        }
     }
 }
 
@@ -279,11 +283,11 @@ void House::setRoomsSelected(Vec2d pos){
     }
 }
 
-vector  <Wall*> House::splitWall(Wall* wall, Vec2d pos){  // CHECK THE EMAILS
+vector  <Wall*> House::splitWall(Wall* wall, Vec2d pos){
     Wall* w1;
     Wall* w2;
 
-    if (wall->isVertical==false){ // should be triggering this, maybe include cout
+    if (wall->isVertical==false){
         w1 = wallFactory(wall->P1,{pos.x,wall->FindP2().y});
         w2 = wallFactory({pos.x,wall->FindP2().y},wall->FindP2());
 
@@ -292,7 +296,6 @@ vector  <Wall*> House::splitWall(Wall* wall, Vec2d pos){  // CHECK THE EMAILS
         w1 = wallFactory(wall->P1,{wall->FindP2().x,pos.y});
         w2 = wallFactory({wall->FindP2().x,pos.y},wall->FindP2());
     }
-    // delete original wall that was split
 
     for (auto& r: rooms){
         if (r.containsWall(wall)) {
@@ -333,8 +336,6 @@ void House::vSplitRoom(Vec2d pos){
         cout << "No room found " << endl;
         return;
     }
-    // split it
-    // find the two walls that will be split (that are intersected by the wall the user has placed)
 
     vector <Wall*> room1;
     vector <Wall*> room2;
@@ -345,7 +346,6 @@ void House::vSplitRoom(Vec2d pos){
 
     for (auto& w: r->walls){
         if (w->doesLineIntersect(pos,true)){
-            //found one
             intersectedWalls.push_back(w);
             onRoom1=!onRoom1;
         }
@@ -364,29 +364,16 @@ void House::vSplitRoom(Vec2d pos){
         return;
     }
 
-
-    //we have the intersected walls
-    //we have split the other walls into two lists for the two new rooms
-    //make 5 new walls - ul,ur,ll,lr,middle
-
     if (intersectedWalls[0]->P1.y<intersectedWalls[1]->P1.y){ //ensuring intersectedWalls[0] is on top
         Wall* first = intersectedWalls[1];
         Wall* second = intersectedWalls[0];
         intersectedWalls[0]=first;
         intersectedWalls[1]=second;
     }
-    else{} //for any room, I can split it once, but after that, I can only split it on the left half of the original split
-    //the LEFT room that is created can always be split, but the right one cant
+    else{}
     Vec2d mP1{pos.x,intersectedWalls[0]->P1.y};
     Vec2d mP2{pos.x,intersectedWalls[1]->P1.y};
 
-    //    if (splitWall(intersectedWalls[0],pos)[0]->P1.x>splitWall(intersectedWalls[1],pos)[1]->P1.x){ //ensuring w1 is left wall
-    //        Wall* first = splitWall(intersectedWalls[1],pos)[1];
-    //        Wall* second = splitWall(intersectedWalls[0],pos)[0];
-    //        splitWall(intersectedWalls[0],pos)[0]=first;
-    //        splitWall(intersectedWalls[1],pos)[1]=second;
-    //    }
-    //    else{}
     vector <Wall*> topsplitwalls = splitWall(intersectedWalls[0],pos);
     vector <Wall*> bottomsplitwalls = splitWall(intersectedWalls[1],pos);
 
@@ -396,36 +383,34 @@ void House::vSplitRoom(Vec2d pos){
     Wall* lr = bottomsplitwalls[1]; //right room
     Wall* middleWall = wallFactory(mP2, mP1); // both rooms
 
+    bool doestouch=false;
     for (int i=0; i<room1.size();i++){
-        if (wallsTouch(*room1[i],*ul)==false){
-            swap(room1,room2);
-            break;
+        if (wallsTouch(*room1[i],*ul)){
+            doestouch=true;
         }
+    }
+
+    if (!doestouch){
+        swap(room1,room2);
     }
 
     for (int i=0; i<room1.size();i++){
         if (wallsTouch(*room1[i],*ul)==true){
-            // room1[i+1]=ul;
-            room1.insert(room1.begin()+i,ll);
-            room1.insert(room1.begin()+i,middleWall);
-            room1.insert(room1.begin()+i,ul);
+            room1.insert(room1.begin()+i+1,ul);
+            room1.insert(room1.begin()+i+2,middleWall);
+            room1.insert(room1.begin()+i+3,ll);
             cout << "added walls to room1" << endl;
             break;
-            //  room1[i+2]=middleWall;
-            //  room1[i+3]=ll;
         }
     }
 
     for (int i=0; i<room2.size();i++){
         if (wallsTouch(*room2[i],*lr)==true){
-            //room2[i-1]=ur;
-            room2.insert(room2.begin()+i,ur);
-            room2.insert(room2.begin()+i,middleWall);
-            room2.insert(room2.begin()+i,lr);
+            room2.insert(room2.begin()+i+1,lr);
+            room2.insert(room2.begin()+i+2,middleWall);
+            room2.insert(room2.begin()+i+3,ur);
             cout << "added rooms to room2" << endl;
             break;
-            // room2[i-2]=middleWall;
-            // room2[i-3]=lr;
         }
     }
 
@@ -435,14 +420,6 @@ void House::vSplitRoom(Vec2d pos){
     cout << "This is the size of the room2: " << room2.size() << endl;
     roomFactory("left", room1);
     roomFactory("right", room2);
-    // rooms.push_back(LRoom);
-    //rooms.push_back(RRoom);
-
-    // need to add new split walls to the rooms and the middle wall to both rooms
-    //    roomFactory()
-    // create two new rooms
-    // delete original room
-    // Wall* ul = wallFactory(); -- idk why this is here
 }
 
 void House::hSplitRoom(Vec2d pos){
@@ -453,8 +430,6 @@ void House::hSplitRoom(Vec2d pos){
         cout << "No room found " << endl;
         return;
     }
-    // split it
-    // find the two walls that will be split (that are intersected by the wall the user has placed)
 
     vector <Wall*> tRoom;
     vector <Wall*> bRoom;
@@ -464,8 +439,7 @@ void House::hSplitRoom(Vec2d pos){
     vector <Wall*> intersectedWalls;
 
     for (auto& w: r->walls){
-        if (w->doesLineIntersect(pos,false)){ //watch this
-            //found one
+        if (w->doesLineIntersect(pos,false)){
             intersectedWalls.push_back(w);
             onTopRoom=!onTopRoom;
         }
@@ -484,75 +458,53 @@ void House::hSplitRoom(Vec2d pos){
         return;
     }
 
-
-    //we have the intersected walls
-    //we have split the other walls into two lists for the two new rooms
-    //make 5 new walls - ul,ur,ll,lr,middle
-
-    if (intersectedWalls[0]->P1.x>intersectedWalls[1]->P1.x){//watch! //ensuring intersectedWalls[0] is on top
+    if (intersectedWalls[0]->P1.x>intersectedWalls[1]->P1.x){
         Wall* first = intersectedWalls[1];
         Wall* second = intersectedWalls[0];
         intersectedWalls[0]=first;
         intersectedWalls[1]=second;
     }
-    else{} //for any room, I can split it once, but after that, I can only split it on the left half of the original split
-    //the LEFT room that is created can always be split, but the right one cant
-    Vec2d mP1{intersectedWalls[0]->P1.x, pos.y}; //might have to make sure y second
-    Vec2d mP2{intersectedWalls[1]->P1.x, pos.y}; // same here
+    else{}
+    Vec2d mP1{intersectedWalls[0]->P1.x, pos.y};
+    Vec2d mP2{intersectedWalls[1]->P1.x, pos.y};
 
-    //    if (splitWall(intersectedWalls[0],pos)[0]->P1.x>splitWall(intersectedWalls[1],pos)[1]->P1.x){ //ensuring w1 is left wall
-    //        Wall* first = splitWall(intersectedWalls[1],pos)[1];
-    //        Wall* second = splitWall(intersectedWalls[0],pos)[0];
-    //        splitWall(intersectedWalls[0],pos)[0]=first;
-    //        splitWall(intersectedWalls[1],pos)[1]=second;
-    //    }
-    //    else{}
-    vector <Wall*> leftsplitwalls = splitWall(intersectedWalls[0],pos); //watch
-    vector <Wall*> rightsplitwalls = splitWall(intersectedWalls[1],pos); //watch
+    vector <Wall*> leftsplitwalls = splitWall(intersectedWalls[0],pos);
+    vector <Wall*> rightsplitwalls = splitWall(intersectedWalls[1],pos);
 
-    Wall * tl = leftsplitwalls[0]; //left room -- top
-    Wall* bl = leftsplitwalls[1]; //right room -- bottom
-    Wall* tr = rightsplitwalls[0]; // left room
-    Wall* br = rightsplitwalls[1]; //right room
-    Wall* middleWall = wallFactory(mP1, mP2); // both rooms -- make sure its right - prev
+    Wall * tl = leftsplitwalls[0];
+    Wall* bl = leftsplitwalls[1];
+    Wall* tr = rightsplitwalls[0];
+    Wall* br = rightsplitwalls[1];
+    Wall* middleWall = wallFactory(mP1, mP2);
 
-    //    for (int i=0; i<tRoom.size();i++){
-    //        if (wallsTouch(*tRoom[i],*tl)==false){
-    //            swap(tRoom,bRoom);
-    //            break;
-    //        }
-    //    }
-
+    bool doestouch=false;
     for (int i=0; i<bRoom.size();i++){
-        if (wallsTouch(*bRoom[i],*bl)==false){
-            swap(tRoom,bRoom);
-            break;
+        if (wallsTouch(*bRoom[i],*bl)){
+            doestouch=true;
         }
     }
 
+    if (!doestouch){
+        swap(bRoom,tRoom);
+    }
+
     for (int i=0; i<tRoom.size();i++){
-        if (wallsTouch(*tRoom[i],*tl)==true){
-            // room1[i+1]=ul;
-            tRoom.insert(tRoom.begin()+i,tl);
-            tRoom.insert(tRoom.begin()+i,middleWall);
-            tRoom.insert(tRoom.begin()+i,tr);
+        if (wallsTouch(*tRoom[i],*tr)==true){
+            tRoom.insert(tRoom.begin()+i+1,tr);
+            tRoom.insert(tRoom.begin()+i+2,middleWall);
+            tRoom.insert(tRoom.begin()+i+3,tl);
             cout << "added walls to room1" << endl;
             break;
-            //  room1[i+2]=middleWall;
-            //  room1[i+3]=ll;
         }
     }
 
     for (int i=0; i<bRoom.size();i++){
         if (wallsTouch(*bRoom[i],*bl)==true){
-            //room2[i-1]=ur;
-            bRoom.insert(bRoom.begin()+i,br);  // watch order here and prev
-            bRoom.insert(bRoom.begin()+i,middleWall);
-            bRoom.insert(bRoom.begin()+i,bl);
+            bRoom.insert(bRoom.begin()+i+1,bl);
+            bRoom.insert(bRoom.begin()+i+2,middleWall);
+            bRoom.insert(bRoom.begin()+i+3,br);
             cout << "added rooms to room2" << endl;
             break;
-            // room2[i-2]=middleWall;
-            // room2[i-3]=lr;
         }
     }
 
@@ -562,14 +514,6 @@ void House::hSplitRoom(Vec2d pos){
     cout << "This is the size of the broom: " << bRoom.size() << endl;
     roomFactory("top", tRoom);
     roomFactory("bottom", bRoom);
-    // rooms.push_back(LRoom);
-    //rooms.push_back(RRoom);
-
-    // need to add new split walls to the rooms and the middle wall to both rooms
-    //    roomFactory()
-    // create two new rooms
-    // delete original room
-    // Wall* ul = wallFactory(); -- idk why this is here
 }
 
 void graphicsMain(Graphics& g){
