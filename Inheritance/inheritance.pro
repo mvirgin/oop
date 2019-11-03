@@ -5,9 +5,11 @@ CONFIG += gui
 CONFIG += c++14
 
 HEADERS    = \
-    house.h \
-    room.h \
-    wall.h \
+    Ghost.h \
+    blinky.h \
+    gameobject.h \
+    inky.h \
+    pinky.h \
     window.h \
     graphics.h \
     vec2d.h \
@@ -15,9 +17,13 @@ HEADERS    = \
     plugin.h \
 
 SOURCES     = \
-    house.cpp \
+    Ghost.cpp \
+    blinky.cpp \
+    gameobject.cpp \
+    inky.cpp \
     main.cpp \
     graphics.cpp \
+    pinky.cpp \
     vec2d.cpp \
     vec3d.cpp \
     plugin.cpp \
