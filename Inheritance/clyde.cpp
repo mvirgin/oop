@@ -1,0 +1,13 @@
+#include "clyde.h"
+
+constexpr Color ORANGE(255,165,0);
+
+Clyde::Clyde()
+    :Ghost{ORANGE}
+{
+
+}
+
+void Clyde::update(Graphics &g){
+
+}

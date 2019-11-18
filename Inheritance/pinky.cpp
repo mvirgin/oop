@@ -1,7 +1,11 @@
 #include "pinky.h"
 
 Pinky::Pinky()
-    :Ghost{PINK};
+    :Ghost{PURPLE}
 {
+
+}
+
+void Pinky::update(Graphics &g){
 
 }

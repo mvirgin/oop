@@ -7,8 +7,11 @@ CONFIG += c++14
 HEADERS    = \
     Ghost.h \
     blinky.h \
+    clyde.h \
     gameobject.h \
     inky.h \
+    maze.h \
+    pacman.h \
     pinky.h \
     window.h \
     graphics.h \
@@ -19,10 +22,13 @@ HEADERS    = \
 SOURCES     = \
     Ghost.cpp \
     blinky.cpp \
+    clyde.cpp \
     gameobject.cpp \
     inky.cpp \
     main.cpp \
     graphics.cpp \
+    maze.cpp \
+    pacman.cpp \
     pinky.cpp \
     vec2d.cpp \
     vec3d.cpp \
