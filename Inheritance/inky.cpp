@@ -3,11 +3,11 @@
 using namespace mssm;
 
 Inky::Inky()
-    :Ghost{mssm::BLUE}
+    :Ghost{mssm::BLUE,{20,20}}
 {
 
 }
 
-void Inky::update(Graphics& g){
+void Inky::update(Graphics& g, Maze &maze){
 
 }

@@ -7,7 +7,7 @@ class Clyde: public Ghost
 {
 public:
     Clyde();
-    void update(Graphics& g) override;
+    void update(Graphics& g, Maze&maze) override;
 };
 
 #endif // CLYDE_H

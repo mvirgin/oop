@@ -6,7 +6,7 @@
 class Inky: public Ghost{
 public:
     Inky();
-    void update(Graphics& g) override;
+    void update(Graphics& g,Maze&maze) override;
 };
 
 #endif // INKY_H

@@ -6,7 +6,7 @@ class Pinky: public Ghost
 {
 public:
     Pinky();
-    void update(Graphics& g) override;
+    void update(Graphics& g,Maze&maze) override;
 };
 
 #endif // PINKY_H

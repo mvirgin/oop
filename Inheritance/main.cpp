@@ -34,20 +34,16 @@ void graphicsMain(Graphics& g){
     Maze maze;
     Pacman player;
 
+    int row = player.Row(g);
+    int col = player.column(g);
+
     while (g.draw()) {
         g.clear();
-        maze.draw(g);
-        pokey.draw(g);
+        maze.draw(g,WHITE);
+        shadow.draw(g);
         player.draw(g);
-        player.calculateCell(g);
-        player.update(g); // i dont even use g in update
-
-       Vec2d cell = player.calculateCell(g); //bunch of if statements here checking adjacent cells with the requested direction
-       if (maze.canMove(cell.x,cell.y)==false){
-       player.stop(g); // i dont use g here either
-       }
-
-
+        player.calculateCell(g, row, col);
+        player.update(g,maze); // i dont even use g in update
 
         for (const Event& e : g.events()) {
             switch (e.evtType) {
@@ -59,20 +55,24 @@ void graphicsMain(Graphics& g){
             case EvtType::KeyPress:
                 switch (e.arg) {
                 case 'W':
-                    player.velocity.y=1.5;
-                    player.velocity.x=0;
+                    player.direction = 'w';
+//                    player.velocity.y=1.0; //only  change velocity
+//                    player.velocity.x=0;
                     break;
                 case 'A':
-                    player.velocity.x=-1.5;
-                    player.velocity.y=0;
+                    player.direction='a';
+//                    player.velocity.x=-1.0;
+//                    player.velocity.y=0;
                     break;
                 case 'S':
-                    player.velocity.y=-1.5;
-                    player.velocity.x=0;
+                    player.direction='s';
+//                    player.velocity.y=-1.0;
+//                    player.velocity.x=0;
                     break;
                 case 'D':
-                    player.velocity.x=1.5;
-                    player.velocity.y=0;
+                    player.direction='d';
+//                    player.velocity.x=1.0;
+//                    player.velocity.y=0;
                     break;
                 }
                 break;
