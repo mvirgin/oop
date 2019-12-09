@@ -82,40 +82,23 @@ bool GameObject::canMoveRight(Graphics &g, Maze &maze){
 
 void GameObject::checkStop(Graphics & g, Maze & maze)
 {
-    if (velocity.x>0){
-        if (canMoveRight(g,maze)==false){
-            stop(g);
-            pos=cellCenter(g);
-        }
-        else{
-            // don't change velocity
-        }
+    bool shouldStop{false};
+
+    if (velocity.x>0 && !canMoveRight(g,maze)){
+        shouldStop = true;
     }
-    if (velocity.x<0){
-        if (canMoveLeft(g,maze)==false){
-            stop(g);
-            pos=cellCenter(g);
-        }
-        else{
-            // don't change velocity
-        }
+    if (velocity.x<0 && !canMoveLeft(g,maze)){
+        shouldStop = true;
     }
-    if (velocity.y>0){
-        if (canMoveUp(g,maze)==false){
-            stop(g);
-            pos=cellCenter(g);
-        }
-        else{
-            // don't change velocity
-        }
+    if (velocity.y>0 && !canMoveUp(g,maze)){
+        shouldStop = true;
     }
-    if (velocity.y<0){
-        if (canMoveDown(g,maze)==false){
-            stop(g);
-            pos=cellCenter(g);
-        }
-        else{
-            // don't change velocity
-        }
+    if (velocity.y<0 && !canMoveDown(g,maze)){
+        shouldStop = true;
+    }
+
+    if (shouldStop) {
+        stop(g);
+        pos=cellCenter(g);
     }
 }

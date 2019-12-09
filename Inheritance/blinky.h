@@ -1,15 +1,15 @@
 #ifndef BLINKY_H
 #define BLINKY_H
 #include "Ghost.h"
+#include "pacman.h"
 
 class Blinky: public Ghost
 {
-private:
-    //Vec2d posb; -- dont think i need this, blinky IS a ghost, which has a position
-    Vec2d velocity;
 public:
     Blinky();
-    void update(Graphics& g,Maze&maze) override;
+    void update(Graphics& g,Maze& maze) override;
+    void ChaseMode(Graphics& g,Maze& maze,Pacman& player);
+    void bupdate(Graphics& g,Maze& maze,Pacman& player);
 };
 
 #endif // BLINKY_H

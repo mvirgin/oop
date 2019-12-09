@@ -34,16 +34,22 @@ void graphicsMain(Graphics& g){
     Maze maze;
     Pacman player;
 
-    int row = player.Row(g);
-    int col = player.column(g);
-
     while (g.draw()) {
         g.clear();
         maze.draw(g,WHITE);
         shadow.draw(g);
+       // pokey.draw(g);
         player.draw(g);
-        player.calculateCell(g, row, col);
         player.update(g,maze); // i dont even use g in update
+        shadow.bupdate(g,maze,player);
+       // pokey.gupdate(g,maze,player);
+
+        if (player.victory()==true&&player.YouLose()==false){
+            g.text(g.width()/2,g.height()/2,50,"YOU WIN",GREEN);
+        }
+        else if (player.YouLose()==true&&player.victory()==false){
+            g.text(g.width()/2,g.height()/2,50,"YOU LOSE",RED);
+        }
 
         for (const Event& e : g.events()) {
             switch (e.evtType) {

@@ -1,7 +1,7 @@
 #include "pinky.h"
 
 Pinky::Pinky()
-    :Ghost{PURPLE,{20,20}}
+    :Ghost{PURPLE,{393,300}}
 {
 
 }

@@ -3,7 +3,7 @@
 constexpr Color ORANGE(255,165,0);
 
 Clyde::Clyde()
-    :Ghost{ORANGE,{20,20}}
+    :Ghost{ORANGE,{393,300}}
 {
 
 }

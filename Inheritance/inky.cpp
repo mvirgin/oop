@@ -3,7 +3,7 @@
 using namespace mssm;
 
 Inky::Inky()
-    :Ghost{mssm::BLUE,{20,20}}
+    :Ghost{mssm::BLUE,{393,300}}
 {
 
 }

@@ -1,5 +1,6 @@
 #include "maze.h"
 #include "pacman.h"
+#include "iostream"
 
 Maze::Maze():  //in practice, doubly nested loop, i and j one looping over columns and the other looping over rows. Draw a rectangle wherever I find a #, a dot for ., etc
     //there are 25 dots in a row                          mid
@@ -17,10 +18,10 @@ Maze::Maze():  //in practice, doubly nested loop, i and j one looping over colum
 {'#','B','B','B','B','#','.','#','B','B','B','B','B','B','B','B','B','B','B','#','.','#','B','B','B','B','#'},
 {'#','B','B','B','B','#','.','#','B','#','#','#','#','H','#','#','#','#','B','#','.','#','B','B','B','B','#'},
 {'#','#','#','#','#','#','.','#','B','#','B','B','B','B','B','B','B','#','B','#','.','#','#','#','#','#','#'},
-{'T','B','B','B','B','B','.','B','B','#','B','B','B','B','B','B','B','#','B','B','.','B','B','B','B','B','T'},
+{'L','B','B','B','B','B','.','B','B','H','B','B','B','B','B','B','B','H','B','B','.','B','B','B','B','B','T'},
 {'#','#','#','#','#','#','.','#','B','#','B','B','B','B','B','B','B','#','B','#','.','#','#','#','#','#','#'},
 {'#','B','B','B','B','#','.','#','B','#','B','B','B','B','B','B','B','#','B','#','.','#','B','B','B','B','#'},
-{'#','B','B','B','B','#','.','#','B','#','#','#','#','#','#','#','#','#','B','#','.','#','B','B','B','B','#'},
+{'#','B','B','B','B','#','.','#','B','#','#','#','#','H','#','#','#','#','B','#','.','#','B','B','B','B','#'},
 {'#','B','B','B','B','#','.','#','B','B','B','B','B','C','B','B','B','B','B','#','.','#','B','B','B','B','#'},
 {'#','#','#','#','#','#','.','#','B','#','#','#','#','#','#','#','#','#','B','#','.','#','#','#','#','#','#'},
 {'#','.','.','.','.','.','.','.','.','.','.','.','.','#','.','.','.','.','.','.','.','.','.','.','.','.','#'},
@@ -58,11 +59,11 @@ void Maze::draw(Graphics &g, Color c){ //i is the row, j is the column
                 double tall = g.height()/29;
                 g.ellipseC({j*wide+15,i*tall+10},wide/2,tall/2,WHITE,WHITE);
             }
-            if (grid[grid.size()-1-i][j]=='C'){ //cherry, need a respawn/despawn timer
-                double wide = g.width()/27;
-                double tall = g.height()/29;
-                g.ellipseC({j*wide+15,i*tall+10},wide/1.5,tall/1.5,RED,RED);
-            }
+//            if (grid[grid.size()-1-i][j]=='C'){ //cherry, need a respawn/despawn timer
+//                double wide = g.width()/27;
+//                double tall = g.height()/29;
+//                g.ellipseC({j*wide+15,i*tall+10},wide/1.5,tall/1.5,RED,RED);
+//            }
         }
     }
 }
@@ -70,13 +71,35 @@ void Maze::draw(Graphics &g, Color c){ //i is the row, j is the column
 
 bool Maze::canMove(int row, int column){ // i dont think i need row and column params
     bool canMove = false; //could use multiple bools for each pickup - make this return a vector
-    if (grid[grid.size()-1-row][column]=='#'||grid[grid.size()-1-row][column]=='H'){ //might have to change this up with the -1 like in the draw
+    if (grid[grid.size()-1-row][column]=='#'/*||grid[grid.size()-1-row][column]=='H'*/){
         canMove=false;
     }
     else{
         canMove=true;
     }
     return canMove;
+}
+
+bool Maze::doorInFront(int row, int column){
+//    int ro = row +1;
+//    int co = column+1;
+//    bool doorPresent = false;
+//    if (grid[grid.size()-1-ro][co]=='H'){
+//        doorPresent=true;
+//    }
+//    else{
+//        doorPresent=false;
+//    }
+//    return doorPresent;
+}
+
+void Maze::lockDoor(int row, int column){
+//    int ro = row +1;
+//    int co = column+1;
+//    if (doorInFront(ro,co)==true){
+//        cout << "locking door" << endl;
+//       grid[grid.size()-1-ro][co]='#';
+//    }
 }
 
 bool Maze::PelletPresent(int row, int column){ // i dont think i need row and column params
@@ -89,5 +112,48 @@ bool Maze::PelletPresent(int row, int column){ // i dont think i need row and co
     }
     return pellet; // make an eatingpellent func to use in draw, if pelletpresent is true, make it invisible
 }
-//for it to rlly work like pacman, i need to store the requested direction, and check the cell in front of me to see if i can move there. When I can move, I implement that direction change
 
+bool Maze::BigPelletPresent(int row, int column){ // i dont think i need row and column params
+    bool pellet = false; //could use multiple bools for each pickup - make this return a vector
+    if (grid[grid.size()-1-row][column]=='O'){ //might have to change this up with the -1 like in the draw
+        pellet=true;
+    }
+    else{
+        pellet=false;
+    }
+    return pellet; // make an eatingpellent func to use in draw, if pelletpresent is true, make it invisible
+}
+
+void Maze::clearPellet(int row, int column){
+    if (PelletPresent(row,column)==true){
+       grid[grid.size()-1-row][column]='V';
+    }
+}
+
+void Maze::clearBigPellet(int row, int column){
+    if (BigPelletPresent(row,column)==true){
+       grid[grid.size()-1-row][column]='V';
+    }
+}
+
+bool Maze::RightTeleporterPresent(int row, int column){ // i dont think i need row and column params
+    bool porter = false; //could use multiple bools for each pickup - make this return a vector
+    if (grid[grid.size()-1-row][column]=='T'){ //might have to change this up with the -1 like in the draw
+        porter=true;
+    }
+    else{
+        porter=false;
+    }
+    return porter; // make an eatingpellent func to use in draw, if pelletpresent is true, make it invisible
+}
+
+bool Maze::LeftTeleporterPresent(int row, int column){ // i dont think i need row and column params
+    bool porter = false; //could use multiple bools for each pickup - make this return a vector
+    if (grid[grid.size()-1-row][column]=='L'){ //might have to change this up with the -1 like in the draw
+        porter=true;
+    }
+    else{
+        porter=false;
+    }
+    return porter; // make an eatingpellent func to use in draw, if pelletpresent is true, make it invisible
+}

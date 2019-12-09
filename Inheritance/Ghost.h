@@ -2,26 +2,25 @@
 #define ENEMY1_H
 #include "gameobject.h"
 #include "maze.h"
+#include "pacman.h"
 
 class Ghost:public GameObject {
-private:
+protected:
     Color c;
-    Vec2d pos;
-    Vec2d velocity;
-    //Vec2d position -- helps determine if it touches the maze
+    Color origcolor;
+    // int blueFrames=-2;
+    int deathFrames;
 public:
     Ghost(Color c1, Vec2d p1);
     void draw(Graphics& g) override;
-//    Vec2d calculateCell(Graphics &g, int& row, int& col); //
-//    Vec2d cellCenter(Graphics& g); //
-//    void stop(Graphics&g); //
-//    bool canMoveDown(Graphics& g,Maze &maze); //
-//    bool canMoveUp(Graphics& g, Maze &maze);//
-//    bool canMoveLeft(Graphics& g,Maze &maze);//
-//    bool canMoveRight(Graphics&g, Maze &maze);//
-//    int Row(Graphics &g); //
-//    int column(Graphics &g); //
-//    void checkStop(Graphics &g, Maze &maze);//
+    void run(Graphics& g, Maze &maze, Pacman& player);
+    void beEatable(Graphics &g, Pacman &player);
+    void Wander(Graphics& g, Maze &maze);
+    void gupdate(Graphics& g, Maze &maze, Pacman& player);
+    void goUp(Graphics&g, Maze&maze);
+    void goLeft(Graphics&g, Maze&maze);
+    void goRight(Graphics&g, Maze&maze);
+    void goDown(Graphics&g, Maze&maze);
 };
 
 #endif // ENEMY1_H
