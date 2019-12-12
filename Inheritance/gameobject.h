@@ -7,7 +7,7 @@ class Maze;
 //abstract base class -- defines interfance to be implemented by derived classes
 class GameObject
 {
-public:
+public:  //slide for each main class, and then important methods/funcs in classes, screenshots of game!!!!!!!!!!!!!!!!!!!!!!!!
     Vec2d pos;
     Vec2d velocity;
 public:
@@ -25,7 +25,9 @@ public:
     bool canMoveRight(Graphics&g, Maze &maze);//
     int Row(Graphics &g); //
     int column(Graphics &g); //
-    void checkStop(Graphics &g, Maze &maze);//
+    bool checkStop(Graphics &g, Maze &maze);//
+    bool isMoving();
+    bool WillPassCenter(Graphics &g);
 };
 
 #endif // GAMEOBJECT_H

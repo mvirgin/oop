@@ -134,7 +134,7 @@ bool Pacman::isInvincible(){
 }
 
 bool Pacman::victory(){
-    if (counter>=8){
+    if (counter>=234){
         return true;
     }
     else{

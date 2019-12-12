@@ -8,7 +8,6 @@ class Ghost:public GameObject {
 protected:
     Color c;
     Color origcolor;
-    // int blueFrames=-2;
     int deathFrames;
 public:
     Ghost(Color c1, Vec2d p1);

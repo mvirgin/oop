@@ -2,8 +2,10 @@
 #include "Ghost.h"
 using namespace mssm;
 
+constexpr Color CYAN(0,255,255);
+
 Inky::Inky()
-    :Ghost{mssm::BLUE,{393,300}}
+    :Ghost{mssm::CYAN,{393,300}}
 {
 
 }

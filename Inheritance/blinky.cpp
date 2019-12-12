@@ -37,48 +37,35 @@ void Blinky::bupdate(Graphics &g, Maze &maze, Pacman &player){
     }
 }
 
-void Blinky::ChaseMode(Graphics &g, Maze &maze, Pacman &player){
+void Blinky::ChaseMode(Graphics &g, Maze &maze, Pacman &player){   //COPY WANDER CODE AND WHERE IM MAKING A RADNOM DESCISION THERE MAKE AN INFORMED DESCISION HERE
     int prow = player.Row(g);
     int pcol = player.column(g);
-
     int grow = Row(g);
     int gcol = column(g);
-    //look at where the player is, try to get to him
-    //probably want to split into player above and to the right, player above and to the left, player below and to the right, player below and to left
     //above and right
-    if (prow>grow&&pcol>gcol){ //if player is above me, I want to go up until something is in my way -- its not hitting this, what if theyre on the same level
-        // cout << "above and right" <<endl;
-        if (canMoveUp(g,maze)==true){
+    if (prow>grow&&pcol>gcol){ //if player is above me, I want to go up until something is in my way
+        if (canMoveUp(g,maze)){
             pos.x=cellCenter(g).x;
             velocity.y=1.8;
             velocity.x=0;
         }
-        else if (canMoveUp(g,maze)==false){
+        else if (canMoveRight(g,maze)){
+            velocity.y=0;
+            velocity.x=1.8;
+            pos.y=cellCenter(g).y;
+        }
+        else if (canMoveLeft(g,maze)){
+            goLeft(g,maze);
+        }
+        else if (canMoveDown(g,maze)){
+            goDown(g,maze);
+        }
+        else {
             checkStop(g,maze);
-            if (canMoveRight(g,maze)==true){
-                //cout <<"chasing"<<endl;
-                velocity.y=0;
-                velocity.x=1.8;
-                pos.y=cellCenter(g).y;
-            }
-            else if (canMoveRight(g,maze)==false){
-                // cout << "stopping" << endl;
-                checkStop(g,maze);
-                //                if (canMoveLeft(g,maze)==true){
-                //                    cout << "weirdthing4" <<endl;
-                //                    velocity.y=0;
-                //                    velocity.x=-1.8;
-                //                    pos.y=cellCenter(g).y;
-                //                }
-                //                else if(canMoveLeft(g,maze)==false){
-                //                    checkStop(g,maze);
-                //                }
-            }
         }
     }
     // above and left
     else if (prow>grow&&pcol<gcol){
-        // cout <<"above and left" <<endl;
         if (canMoveUp(g,maze)==true){
             pos.x=cellCenter(g).x;
             velocity.y=1.8;
@@ -87,29 +74,17 @@ void Blinky::ChaseMode(Graphics &g, Maze &maze, Pacman &player){
         else if (canMoveUp(g,maze)==false){
             checkStop(g,maze);
             if (canMoveLeft(g,maze)==true){
-                //cout <<"chasing"<<endl;
                 velocity.y=0;
                 velocity.x=-1.8;
                 pos.y=cellCenter(g).y;
             }
             else if (canMoveLeft(g,maze)==false){
-                // cout << "stopping" << endl;
                 checkStop(g,maze);
-                //                if (canMoveRight(g,maze)==true){
-                //                    cout << "weird thing" <<endl; // all of these parts in each if is broken
-                //                    velocity.y=0;
-                //                    velocity.x=1.8;
-                //                    pos.y=cellCenter(g).y;
-                //                }
-                //                else if(canMoveRight(g,maze)==false){
-                //                    checkStop(g,maze);
-                //                }
             }
         }
     }
     //below and right
     else if (prow<grow&&pcol>gcol){
-        //   cout << "below and right" <<endl;
         if (canMoveDown(g,maze)==true){
             pos.x=cellCenter(g).x;
             velocity.y=-1.8;
@@ -126,15 +101,6 @@ void Blinky::ChaseMode(Graphics &g, Maze &maze, Pacman &player){
             else if (canMoveRight(g,maze)==false){
                 // cout << "stopping" << endl;
                 checkStop(g,maze);
-                //                if (canMoveLeft(g,maze)==true){
-                //                    cout<< "weirdthing3" <<endl;
-                //                    velocity.y=0;
-                //                    velocity.x=-1.8;
-                //                    pos.y=cellCenter(g).y;
-                //                }
-                //                else if(canMoveLeft(g,maze)==false){
-                //                    checkStop(g,maze);
-                //                }
             }
         }
     }
@@ -157,15 +123,6 @@ void Blinky::ChaseMode(Graphics &g, Maze &maze, Pacman &player){
             else if (canMoveLeft(g,maze)==false){
                 // cout << "stopping" << endl;
                 checkStop(g,maze);
-                //                if (canMoveUp(g,maze)==true){
-                //                    cout << "weird thing2" << endl; //its crashing here, probably because it always wants to go towards the player
-                //                    velocity.y=1.8;
-                //                    velocity.x=0;
-                //                    pos.y=cellCenter(g).x;
-                //                }
-                //                else if(canMoveUp(g,maze)==false){
-                //                    checkStop(g,maze);
-                //                }
             }
         }
     }
@@ -223,7 +180,7 @@ void Blinky::ChaseMode(Graphics &g, Maze &maze, Pacman &player){
         }
         else if (canMoveRight(g,maze)==false){
             checkStop(g,maze);
-            if (canMoveUp(g,maze)==true){   //might want to change this to up/down
+            if (canMoveUp(g,maze)==true){
                 //cout <<"chasing"<<endl;
                 velocity.y=1.8;
                 velocity.x=0;
@@ -245,32 +202,151 @@ void Blinky::ChaseMode(Graphics &g, Maze &maze, Pacman &player){
         }
         else if (canMoveLeft(g,maze)==false){
             checkStop(g,maze);
-            //            if (canMoveRight(g,maze)==true){ //might want to change this to up/down
-            //                //cout <<"chasing"<<endl;
-            //                velocity.y=0;
-            //                velocity.x=-1.8;
-            //                pos.y=cellCenter(g).y;
-            //            }
-            //            else if (canMoveRight(g,maze)==false){
-            //                // cout << "stopping" << endl;
-            //                checkStop(g,maze);
-            //            }
         }
     }
-    //    else if (player.pos.y<pos.y){
-    //        velocity.y=-1.8;
-    //    }
-    //    else{
-    //        stop(g);
-    //    }
-    else{
-        //  cout << "final case" <<endl;
-    }
-   // LifeAndDeath(g, player, maze, gcol, pcol, grow, prow);
-
     pos=pos+velocity;
 }
 
-
-
-
+//-- Experimental chaseMode
+//    if (checkStop(g, maze)||!isMoving()) { //if I am stopped/otherwise not moving
+//        //  cout << "new direction" <<endl;
+//        if (prow>grow){
+//            cout << "above me, going up" << endl;
+//            goUp(g,maze);
+//        }
+//        else if (prow<grow){
+//            cout << "below me, going down" << endl;
+//            goDown(g,maze);
+//        }
+//        else if (pcol>gcol){
+//            cout << "On right, going right" << endl;
+//            goRight(g,maze);
+//        }
+//        else if (pcol<gcol){
+//            cout << "on left, going left" << endl;
+//            goLeft(g,maze);
+//        }
+//    }
+//    else { //otherwise, if I am moving, see which way I'm moving and if there is an intersection, chance to take it or keep going
+//        if (velocity.y<0&&canMoveLeft(g,maze)&&canMoveRight(g,maze)&&WillPassCenter(g)){
+//            if (pcol<gcol){
+//                goLeft(g,maze);
+//            }
+//            else{
+//                goRight(g,maze);
+//            }
+//        }
+//        else if (velocity.y>0&&canMoveLeft(g,maze)&&canMoveRight(g,maze)&&WillPassCenter(g)){
+//            if (pcol<gcol){
+//                goLeft(g,maze);
+//            }
+//            else{
+//                goRight(g,maze);
+//            }
+//        }
+//        else if (velocity.x>0&&canMoveUp(g,maze)&&canMoveDown(g,maze)&&WillPassCenter(g)){
+//            if (prow>grow){
+//                goUp(g,maze);
+//            }
+//            else{
+//                goDown(g,maze);
+//            }
+//        }
+//        else if(velocity.x<0&&canMoveUp(g,maze)&&canMoveDown(g,maze)&&WillPassCenter(g)){
+//            if (prow>grow){
+//                goUp(g,maze);
+//            }
+//            else{
+//                goDown(g,maze);
+//            }
+//        }
+//        else if(velocity.x<0&&canMoveUp(g,maze)&&canMoveDown(g,maze)&&canMoveRight(g,maze)&&WillPassCenter(g)){
+//            if (prow>grow){ // might need combos, what if hes above me AND to the right?-----------------------------------
+//                goUp(g,maze);
+//            }
+//            else if(pcol>gcol){
+//                goRight(g,maze);
+//            }
+//            else{
+//                goDown(g,maze);
+//            }
+//        }
+//        else if(velocity.x<0&&canMoveUp(g,maze)&&canMoveDown(g,maze)&&canMoveLeft(g,maze)&&WillPassCenter(g)){
+//            if (prow>grow){ // might need combos, what if hes above me AND to the right?-----------------------------------
+//                goUp(g,maze);
+//            }
+//            else if(pcol>gcol){
+//                goLeft(g,maze);
+//            }
+//            else{
+//                goDown(g,maze);
+//            }
+//        }
+//        else if (velocity.y>0&&canMoveLeft(g,maze)&&canMoveRight(g,maze)&&canMoveDown(g,maze)&&WillPassCenter(g)){
+//            if (pcol<gcol){
+//                goLeft(g,maze);
+//            }
+//            else if(prow<grow){
+//                goDown(g,maze);
+//            }
+//            else{
+//                goRight(g,maze);
+//            }
+//        }
+//        else if (velocity.y<0&&canMoveLeft(g,maze)&&canMoveRight(g,maze)&&canMoveUp(g,maze)&&WillPassCenter(g)){
+//            if (pcol<gcol){
+//                goLeft(g,maze);
+//            }
+//            else if (prow>grow){
+//                goUp(g,maze);
+//            }
+//            else{
+//                goRight(g,maze);
+//            }
+//        }
+//        else if (velocity.y<0&&canMoveLeft(g,maze)&&WillPassCenter(g)){
+//            if (pcol<gcol){
+//                goLeft(g,maze);
+//            }
+//            //            if (g.randomInt(1,2)==1){
+//            //                goLeft(g,maze);
+//            //            }
+//        }
+//        else if (velocity.y<0&&canMoveRight(g,maze)&&WillPassCenter(g)){
+//            if (pcol>gcol){
+//                goRight(g,maze);
+//            }
+//        }
+//        else if (velocity.y>0&&canMoveLeft(g,maze)&&WillPassCenter(g)){
+//            if (pcol<gcol){
+//                goLeft(g,maze);
+//            }
+//        }
+//        else if (velocity.y>0&&canMoveRight(g,maze)&&WillPassCenter(g)){
+//            if (pcol>gcol){
+//                goRight(g,maze);
+//            }
+//        }
+//        else if (velocity.x<0&&canMoveUp(g,maze)&&WillPassCenter(g)){
+//            if (prow>grow){
+//                goUp(g,maze);
+//            }
+//        }
+//        else if (velocity.x<0&&canMoveDown(g,maze)&&WillPassCenter(g)){
+//            if (prow<grow){
+//                goDown(g,maze);
+//            }
+//        }
+//        else if (velocity.x>0&&canMoveUp(g,maze)&&WillPassCenter(g)){
+//            if (prow>grow){
+//                goUp(g,maze);
+//            }
+//        }
+//        else if (velocity.x>0&&canMoveDown(g,maze)&&WillPassCenter(g)){
+//            if (prow<grow){
+//                goDown(g,maze);
+//            }
+//        }
+//    }
+//    pos = pos + velocity;
+//}

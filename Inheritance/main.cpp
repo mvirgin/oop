@@ -38,11 +38,15 @@ void graphicsMain(Graphics& g){
         g.clear();
         maze.draw(g,WHITE);
         shadow.draw(g);
-       // pokey.draw(g);
+        pokey.draw(g);
+        speedy.draw(g);
+        bashful.draw(g);
         player.draw(g);
         player.update(g,maze); // i dont even use g in update
         shadow.bupdate(g,maze,player);
-       // pokey.gupdate(g,maze,player);
+        pokey.gupdate(g,maze,player);
+        speedy.gupdate(g,maze,player);
+        bashful.gupdate(g,maze,player);
 
         if (player.victory()==true&&player.YouLose()==false){
             g.text(g.width()/2,g.height()/2,50,"YOU WIN",GREEN);

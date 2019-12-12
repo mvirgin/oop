@@ -80,7 +80,7 @@ bool GameObject::canMoveRight(Graphics &g, Maze &maze){
     return canRight;
 }
 
-void GameObject::checkStop(Graphics & g, Maze & maze)
+bool GameObject::checkStop(Graphics & g, Maze & maze)
 {
     bool shouldStop{false};
 
@@ -101,4 +101,35 @@ void GameObject::checkStop(Graphics & g, Maze & maze)
         stop(g);
         pos=cellCenter(g);
     }
+
+    return shouldStop;
+}
+
+bool GameObject::isMoving(){
+    if (fabs(velocity.x)>0||fabs(velocity.y)>0){
+        return true;
+    }
+    else{
+        return false;
+    }
+}
+
+bool GameObject::WillPassCenter(Graphics& g){
+    // look at velocity, 4 cases for each direction
+    //going right, if pos is to left of cellcenter, but pos+vel is to the right of center, im crossing center line
+    // in Wander, only turn at intersections if I'm passing the center of the cell
+    bool passingCenter=false;
+    if (velocity.x>0&&pos.x<cellCenter(g).x&&(pos.x+velocity.x)>cellCenter(g).x){
+        passingCenter=true;
+    }
+    else if(velocity.x<0&&pos.x>cellCenter(g).x&&(pos.x+velocity.x)<cellCenter(g).x){
+        passingCenter=true;
+    }
+    else if(velocity.y>0&&pos.y<cellCenter(g).y&&(pos.y+velocity.y)>cellCenter(g).y){
+        passingCenter=true;
+    }
+    else if(velocity.y<0&&pos.y>cellCenter(g).y&&(pos.y+velocity.y)<cellCenter(g).y){
+        passingCenter=true;
+    }
+    return passingCenter;
 }
