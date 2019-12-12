@@ -3,7 +3,7 @@
 #include "graphics.h"
 #include "maze.h"
 using namespace mssm;
-class Maze;
+
 //abstract base class -- defines interfance to be implemented by derived classes
 class GameObject
 {

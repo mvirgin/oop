@@ -21,7 +21,7 @@ void Pacman::update(Graphics &g,Maze& maze){ //check if he is allowed to move - 
         }
         else{
             pos.x=cellcenter.x;
-            velocity.y=-1.7;
+            velocity.y=-2.7;
             velocity.x=0;
         }
     }
@@ -33,7 +33,7 @@ void Pacman::update(Graphics &g,Maze& maze){ //check if he is allowed to move - 
         }
         else{
             pos.x=cellcenter.x;
-            velocity.y=1.7;
+            velocity.y=2.7;
             velocity.x=0;
         }
     }
@@ -45,7 +45,7 @@ void Pacman::update(Graphics &g,Maze& maze){ //check if he is allowed to move - 
         }
         else{
             pos.y=cellcenter.y;
-            velocity.x=1.7;
+            velocity.x=2.7;
             velocity.y=0;
         }
     }
@@ -57,7 +57,7 @@ void Pacman::update(Graphics &g,Maze& maze){ //check if he is allowed to move - 
         }
         else{
             pos.y=cellcenter.y;
-            velocity.x=-1.7;
+            velocity.x=-2.7;
             velocity.y=0;
         }
     }

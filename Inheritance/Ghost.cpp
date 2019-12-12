@@ -439,7 +439,7 @@ void Ghost::Wander(Graphics &g, Maze &maze){
 void Ghost::goUp(Graphics&g, Maze&maze){
     if (canMoveUp(g,maze)==true){
         pos.x=cellCenter(g).x;
-        velocity.y=1.75;
+        velocity.y=2.75;
         // cout << "moving up" << endl;
         velocity.x=0;
     }
@@ -452,7 +452,7 @@ void Ghost::goUp(Graphics&g, Maze&maze){
 void Ghost::goDown(Graphics &g, Maze &maze){
     if (canMoveDown(g,maze)==true){
         pos.x=cellCenter(g).x;
-        velocity.y=-1.75;
+        velocity.y=-2.75;
         // cout << "moving down" << endl;
         velocity.x=0;
     }
@@ -466,7 +466,7 @@ void Ghost::goDown(Graphics &g, Maze &maze){
 void Ghost::goRight(Graphics &g, Maze &maze){
     if (canMoveRight(g,maze)==true){
         pos.y=cellCenter(g).y;
-        velocity.x=1.75;
+        velocity.x=2.75;
         // cout << "moving Right" << endl;
         velocity.y=0;
     }
@@ -479,7 +479,7 @@ void Ghost::goRight(Graphics &g, Maze &maze){
 void Ghost::goLeft(Graphics &g, Maze &maze){
     if (canMoveLeft(g,maze)==true){
         pos.y=cellCenter(g).y;
-        velocity.x=-1.75;
+        velocity.x=-2.75;
         // cout << "moving left" << endl;
         velocity.y=0;
     }

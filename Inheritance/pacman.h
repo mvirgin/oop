@@ -7,7 +7,6 @@
 class Pacman:public GameObject
 {
 private:
-    //    Color c=YELLOW;
     int invincibleFrames=-1;
     int counter=0;
 public:

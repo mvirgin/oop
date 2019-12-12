@@ -59,11 +59,6 @@ void Maze::draw(Graphics &g, Color c){ //i is the row, j is the column
                 double tall = g.height()/29;
                 g.ellipseC({j*wide+15,i*tall+10},wide/2,tall/2,WHITE,WHITE);
             }
-//            if (grid[grid.size()-1-i][j]=='C'){ //cherry, need a respawn/despawn timer
-//                double wide = g.width()/27;
-//                double tall = g.height()/29;
-//                g.ellipseC({j*wide+15,i*tall+10},wide/1.5,tall/1.5,RED,RED);
-//            }
         }
     }
 }

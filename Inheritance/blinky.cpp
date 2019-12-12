@@ -46,12 +46,12 @@ void Blinky::ChaseMode(Graphics &g, Maze &maze, Pacman &player){   //COPY WANDER
     if (prow>grow&&pcol>gcol){ //if player is above me, I want to go up until something is in my way
         if (canMoveUp(g,maze)){
             pos.x=cellCenter(g).x;
-            velocity.y=1.8;
+            velocity.y=2.8;
             velocity.x=0;
         }
         else if (canMoveRight(g,maze)){
             velocity.y=0;
-            velocity.x=1.8;
+            velocity.x=2.8;
             pos.y=cellCenter(g).y;
         }
         else if (canMoveLeft(g,maze)){
@@ -68,14 +68,14 @@ void Blinky::ChaseMode(Graphics &g, Maze &maze, Pacman &player){   //COPY WANDER
     else if (prow>grow&&pcol<gcol){
         if (canMoveUp(g,maze)==true){
             pos.x=cellCenter(g).x;
-            velocity.y=1.8;
+            velocity.y=2.8;
             velocity.x=0;
         }
         else if (canMoveUp(g,maze)==false){
             checkStop(g,maze);
             if (canMoveLeft(g,maze)==true){
                 velocity.y=0;
-                velocity.x=-1.8;
+                velocity.x=-2.8;
                 pos.y=cellCenter(g).y;
             }
             else if (canMoveLeft(g,maze)==false){
@@ -87,7 +87,7 @@ void Blinky::ChaseMode(Graphics &g, Maze &maze, Pacman &player){   //COPY WANDER
     else if (prow<grow&&pcol>gcol){
         if (canMoveDown(g,maze)==true){
             pos.x=cellCenter(g).x;
-            velocity.y=-1.8;
+            velocity.y=-2.8;
             velocity.x=0;
         }
         else if (canMoveDown(g,maze)==false){
@@ -95,7 +95,7 @@ void Blinky::ChaseMode(Graphics &g, Maze &maze, Pacman &player){   //COPY WANDER
             if (canMoveRight(g,maze)==true){
                 //cout <<"chasing"<<endl;
                 velocity.y=0;
-                velocity.x=1.8;
+                velocity.x=2.8;
                 pos.y=cellCenter(g).y;
             }
             else if (canMoveRight(g,maze)==false){
@@ -109,7 +109,7 @@ void Blinky::ChaseMode(Graphics &g, Maze &maze, Pacman &player){   //COPY WANDER
         // cout << "below and left" <<endl;
         if (canMoveDown(g,maze)==true){
             pos.x=cellCenter(g).x;
-            velocity.y=-1.8;
+            velocity.y=-2.8;
             velocity.x=0;
         }
         else if (canMoveDown(g,maze)==false){
@@ -117,7 +117,7 @@ void Blinky::ChaseMode(Graphics &g, Maze &maze, Pacman &player){   //COPY WANDER
             if (canMoveLeft(g,maze)==true){
                 //cout <<"chasing"<<endl;
                 velocity.y=0;
-                velocity.x=-1.8;
+                velocity.x=-2.8;
                 pos.y=cellCenter(g).y;
             }
             else if (canMoveLeft(g,maze)==false){
@@ -131,7 +131,7 @@ void Blinky::ChaseMode(Graphics &g, Maze &maze, Pacman &player){   //COPY WANDER
         //   cout << "directly below" << endl;
         if (canMoveUp(g,maze)==true){
             pos.x=cellCenter(g).x;
-            velocity.y=1.8;
+            velocity.y=2.8;
             velocity.x=0;
         }
         else if (canMoveUp(g,maze)==false){
@@ -139,7 +139,7 @@ void Blinky::ChaseMode(Graphics &g, Maze &maze, Pacman &player){   //COPY WANDER
             if (canMoveLeft(g,maze)==true){
                 //cout <<"chasing"<<endl;
                 velocity.y=0;
-                velocity.x=-1.8;
+                velocity.x=-2.8;
                 pos.y=cellCenter(g).y;
             }
             else if (canMoveLeft(g,maze)==false){
@@ -153,7 +153,7 @@ void Blinky::ChaseMode(Graphics &g, Maze &maze, Pacman &player){   //COPY WANDER
         //   cout << "directly above" <<endl;
         if (canMoveDown(g,maze)==true){
             pos.x=cellCenter(g).x;
-            velocity.y=-1.8;
+            velocity.y=-2.8;
             velocity.x=0;
         }
         else if (canMoveDown(g,maze)==false){
@@ -161,7 +161,7 @@ void Blinky::ChaseMode(Graphics &g, Maze &maze, Pacman &player){   //COPY WANDER
             if (canMoveLeft(g,maze)==true){
                 //cout <<"chasing"<<endl;
                 velocity.y=0;
-                velocity.x=-1.8;
+                velocity.x=-2.8;
                 pos.y=cellCenter(g).y;
             }
             else if (canMoveLeft(g,maze)==false){
@@ -175,14 +175,14 @@ void Blinky::ChaseMode(Graphics &g, Maze &maze, Pacman &player){   //COPY WANDER
         //   cout << "directright"<<endl;
         if (canMoveRight(g,maze)==true){
             pos.y=cellCenter(g).y;
-            velocity.x=1.8;
+            velocity.x=2.8;
             velocity.y=0;
         }
         else if (canMoveRight(g,maze)==false){
             checkStop(g,maze);
             if (canMoveUp(g,maze)==true){
                 //cout <<"chasing"<<endl;
-                velocity.y=1.8;
+                velocity.y=2.8;
                 velocity.x=0;
                 pos.x=cellCenter(g).x;
             }
@@ -197,7 +197,7 @@ void Blinky::ChaseMode(Graphics &g, Maze &maze, Pacman &player){   //COPY WANDER
         // cout << "directleft" << endl;
         if (canMoveLeft(g,maze)==true){
             pos.y=cellCenter(g).y;
-            velocity.x=-1.8;
+            velocity.x=-2.8;
             velocity.y=0;
         }
         else if (canMoveLeft(g,maze)==false){
